@@ -1,0 +1,62 @@
+[project]
+name = "gems-prize-reference-solution"
+version = "0.1"
+readme = "README.md"
+description = "Reference solution for the GEMS Prize Challenge"
+requires-python = ">=3.12"
+dependencies = [
+    "jupyter",
+    "matplotlib",
+    "numpy",
+    "rasterio",
+    "scikit-image",
+    "segmentation-models-pytorch",
+]
+
+# Pick exactly one of these when installing, e.g., `uv sync --extra cu126`,
+# based on your system and whether you can use a GPU (if you can, you should).
+[project.optional-dependencies]
+cu126 = ["torch", "torchvision"]
+cu130 = ["torch", "torchvision"]
+cpu = ["torch", "torchvision"]
+
+# This project is not a package, just a notebook with its dependencies
+# Tell uv we don't have to package it up
+[tool.uv]
+package = false
+# The GPU/CPU extras are mutually exclusive
+conflicts = [[{ extra = "cu126" }, { extra = "cu130" }, { extra = "cpu" }]]
+
+# Route torch/torchvision to the matching PyTorch wheel index based on the chosen
+# extra. macOS has no CUDA builds, so the cu* extras fall back to the cpu index
+# there (you get the standard Apple/MPS build).
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu126", extra = "cu126", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cu130", extra = "cu130", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cpu", extra = "cu126", marker = "sys_platform == 'darwin'" },
+    { index = "pytorch-cpu", extra = "cu130", marker = "sys_platform == 'darwin'" },
+    { index = "pytorch-cpu", extra = "cpu" },
+]
+torchvision = [
+    { index = "pytorch-cu126", extra = "cu126", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cu130", extra = "cu130", marker = "sys_platform != 'darwin'" },
+    { index = "pytorch-cpu", extra = "cu126", marker = "sys_platform == 'darwin'" },
+    { index = "pytorch-cpu", extra = "cu130", marker = "sys_platform == 'darwin'" },
+    { index = "pytorch-cpu", extra = "cpu" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true

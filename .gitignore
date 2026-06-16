@@ -1,0 +1,5 @@
+.venv/
+*.tif
+__pycache__/
+*.py[co]
+.ipynb_checkpoints

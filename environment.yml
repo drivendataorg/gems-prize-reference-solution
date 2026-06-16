@@ -1,0 +1,22 @@
+# Default environment: uses a GPU build of PyTorch where one is available.
+# On NVIDIA machines conda-forge selects a CUDA build; on Apple Silicon it
+# selects the MPS (Metal) build; otherwise it falls back to CPU.
+# For a guaranteed CPU-only install instead, use environment-cpu.yml.
+name: gems-prize-reference-solution
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.12
+  - jupyter
+  - matplotlib
+  - numpy
+  - rasterio
+  - scikit-image
+  - pytorch
+  - torchvision
+  # To force a specific CUDA version, uncomment and pick one:
+  # - cuda-version=12.6
+  # - cuda-version=13.0
+  - pip
+  - pip:
+      - segmentation-models-pytorch

@@ -1,0 +1,17 @@
+# CPU-only environment: forces the CPU build of PyTorch (no CUDA download).
+# Use this if you don't have an NVIDIA GPU and want the smallest install.
+name: gems-prize-reference-solution
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.12
+  - jupyter
+  - matplotlib
+  - numpy
+  - rasterio
+  - scikit-image
+  - pytorch-cpu
+  - torchvision
+  - pip
+  - pip:
+      - segmentation-models-pytorch
